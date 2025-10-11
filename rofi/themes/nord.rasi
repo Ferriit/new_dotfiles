@@ -1,0 +1,24 @@
+* {
+    background: #2e3440ff;
+    foreground: #d8dee9ff;
+    border-color: #81a1c1ff;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+window {
+    background: @background;
+    border: 2px solid;
+    border-radius: 10px;
+}
+
+element {
+    background: transparent;
+    border-radius: 5px;
+}
+
+element selected {
+    background: #81a1c1ff;
+    foreground: #2e3440ff;
+}
+

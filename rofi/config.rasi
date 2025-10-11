@@ -1,0 +1,42 @@
+* {
+    background: #2e3440ff;
+    foreground: #d8dee9ff;
+    border-color: #81a1c1ff;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+window {
+    background: #5e81ac;
+    border: 2px solid;
+    border-radius: 10px;
+}
+
+element {
+    background: #3b4252ff;
+    foreground: #d8dee9ff;
+    border-radius: 5px;
+}
+
+element selected {
+    background: #81a1c1ff;
+    foreground: #2e3440ff;
+}
+
+configuration {
+    font: "Maple Mono 12";
+    terminal: "kitty";
+    lines: 10;
+    width: 25%;
+    
+    timeout {
+        action: "kb-cancel";  // Action to take on timeout
+        delay: 0;  // Set to a positive value if you want a delay
+    }
+    
+    filebrowser {
+        directories-first: true;
+        sorting-method: "name";
+    }
+}
+

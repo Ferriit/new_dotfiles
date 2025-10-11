@@ -1,0 +1,33 @@
+{
+  "languageserver": {
+    "clangd": {
+      "command": "clangd",
+      "filetypes": ["c", "cpp", "objc", "objcpp"]
+    },
+    "gopls": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod"],
+      "filetypes": ["go"]
+    },
+    "zls": {
+      "command": "zls",
+      "filetypes": ["zig"]
+    },
+    "elixirLS": {
+      "command": "elixir-ls",
+      "filetypes": ["elixir", "eelixir"]
+    },
+    "pyright": {
+      "command": "pyright-langserver",
+      "args": ["--stdio"],
+      "filetypes": ["python"]
+    },
+    "rust": {
+      "command": "rust-analyzer",
+      "filetypes": ["rust"],
+      "rootPatterns": ["Cargo.toml"],
+      "trace.server": "verbose"
+    }
+  }
+}
+

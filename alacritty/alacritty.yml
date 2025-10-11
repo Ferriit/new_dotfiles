@@ -1,0 +1,59 @@
+# Catppuccin Mocha Alacritty v0.15
+
+# Font
+font:
+  normal:
+    family: "Maple Mono"
+    style: "Regular"
+  bold:
+    family: "Maple Mono"
+    style: "Bold"
+  size: 11.0
+  # Ligatures supported if font allows
+  use_thin_strokes: true
+
+# Cursor
+cursor:
+  style: Beam
+  blink: true
+  # Foreground is the text under cursor
+  text: "#1e1e2e"
+  # Cursor color
+  cursor: "#f5e0dc"
+
+# Background and foreground
+background: "#1e1e2e"
+foreground: "#cdd6f4"
+
+# Selection colors
+selection:
+  foreground: "#1e1e2e"
+  background: "#94e2d5"
+
+# Scrollback
+history:
+  lines: 10000
+
+# Colors
+colors:
+  # Normal colors
+  normal:
+    black:   "#45475a"
+    red:     "#f38ba8"
+    green:   "#a6e3a1"
+    yellow:  "#f9e2af"
+    blue:    "#89b4fa"
+    magenta: "#f5c2e7"
+    cyan:    "#94e2d5"
+    white:   "#bac2de"
+
+  # Bright colors
+  bright:
+    black:   "#585b70"
+    red:     "#f38ba8"
+    green:   "#a6e3a1"
+    yellow:  "#f9e2af"
+    blue:    "#89b4fa"
+    magenta: "#f5c2e7"
+    cyan:    "#94e2d5"
+    white:   "#a6adc8"
