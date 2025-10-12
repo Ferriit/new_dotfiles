@@ -92,5 +92,3 @@ ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=5'
 # Neofetch at shell start
 # --------------------------
 neofetch --ascii_distro arch
-
-ferriit@Daniel-Artix ~ ➜ 
