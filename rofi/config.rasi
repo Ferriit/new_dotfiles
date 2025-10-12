@@ -1,26 +1,26 @@
 * {
-    background: #2e3440ff;
-    foreground: #d8dee9ff;
-    border-color: #81a1c1ff;
+    background: #1e1e2eef; // Mocha Dark Color
+    foreground: #cdd6f4ff; // Mocha Text Color
+    border-color: #cba6f7ff; // Selected item color
     border-radius: 5px;
     padding: 5px;
 }
 
 window {
-    background: #5e81ac;
+    background: #2a2930ff; // Darker Mocha Background
     border: 2px solid;
     border-radius: 10px;
 }
 
 element {
-    background: #3b4252ff;
-    foreground: #d8dee9ff;
+    background: #313244ff; // Mocha Element Background
+    foreground: #cdd6f4ff; // Mocha Element Text
     border-radius: 5px;
 }
 
 element selected {
-    background: #81a1c1ff;
-    foreground: #2e3440ff;
+    background: #f38ba8ff; // Selected background
+    foreground: #1e1e2eff; // Selected foreground
 }
 
 configuration {
@@ -39,4 +39,3 @@ configuration {
         sorting-method: "name";
     }
 }
-
