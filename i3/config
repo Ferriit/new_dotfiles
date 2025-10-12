@@ -1,9 +1,14 @@
 # ─────────────────────────────
 # 💜 Catppuccin Mocha i3-gaps Config
+# Swedish (US) layout: US keys, Right Alt → å ä ö
 # ─────────────────────────────
 
+# Mod key
 set $mod Mod4
 font pango:MapleMono Nerd Font 9
+
+
+exec_always --no-startup-id setxkbmap -layout se -variant us
 
 # ─────────────────────────────
 # Autostart apps
@@ -15,8 +20,8 @@ exec --no-startup-id nm-applet
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id export GTK_THEME=Catppuccin-Mocha-Standard-Mauve-Dark
 
-# Optional: remove or fix these if causing problems
-# exec_always --no-startup-id ~/.startup/unmute.sh
+# Optional: remove if unnecessary
+exec_always --no-startup-id ~/.startup/unmute.sh
 # exec_always --no-startup-id python3 ~/Pictures/wallpapers/wallcycle.py
 
 # ─────────────────────────────
@@ -25,6 +30,8 @@ exec --no-startup-id export GTK_THEME=Catppuccin-Mocha-Standard-Mauve-Dark
 gaps outer 10
 gaps inner 15
 for_window [class="^.*"] border pixel 3
+
+exec_always --no-startup-id feh /home/ferriit/Pictures/wallpapers/catppuccin2.jpg --bg-fill
 
 # ─────────────────────────────
 # Colors (Catppuccin Mocha)
@@ -48,13 +55,13 @@ bindsym $mod+Shift+x exec i3lock --blur 5 \
   --insidever-color=89b4faFF \
   --insidewrong-color=f38ba8FF \
   --ringver-color=89b4faFF \
-  --ringwrong-color=89b4faFF
+  --ringwrong-color=f38ba8FF
 
 # ─────────────────────────────
 # Dmenu / Rofi
 # ─────────────────────────────
-# Ensure rofi ≥ 1.5 for theme-str
-bindsym $mod+w exec rofi -show drun -theme-str '* {background: #1e1e2e; foreground: #cdd6f4; selected-background: #cba6f7; selected-foreground: #1e1e2e;}'
+#bindsym $mod+w exec rofi -show drun -theme-str '* {background: #1e1e2e; foreground: #cdd6f4; selected-background: #cba6f7; selected-foreground: #1e1e2e;}'
+bindsym $mod+w exec rofi -show drun
 bindsym $mod+d exec --no-startup-id dmenu_run -nb '#1e1e2e' -nf '#cdd6f4' -sb '#cba6f7' -sf '#1e1e2e' -fn 'MapleMono Nerd Font-9'
 
 # ─────────────────────────────
@@ -83,26 +90,42 @@ tiling_drag modifier titlebar
 bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+t exec --no-startup-id kitty
 bindsym $mod+Shift+t exec --no-startup-id alacritty
+bindsym $mod+e exec --no-startup-id nemo
 
 # ─────────────────────────────
-# Window management
+# Window management (US keys)
 # ─────────────────────────────
 bindsym $mod+q kill
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+odiaeresis focus right
 
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+odiaeresis move right
+# Focus window
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
-bindsym $mod+h split h
+# Move window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# --- Arrow key support ---
+# Focus window with arrows
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move window with arrows
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
 bindsym $mod+v split v
-bindsym $mod+f fullscreen toggle
 bindsym $mod+s layout stacking
 bindsym $mod+c layout tabbed
+bindsym $mod+f fullscreen toggle
 bindsym $mod+z layout toggle split
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
@@ -163,10 +186,10 @@ bindsym Ctrl+Print exec flameshot gui
 # Resize mode
 # ─────────────────────────────
 mode "resize" {
-    bindsym j resize shrink width 10 px or 10 ppt
-    bindsym k resize grow height 10 px or 10 ppt
-    bindsym l resize shrink height 10 px or 10 ppt
-    bindsym odiaeresis resize grow width 10 px or 10 ppt
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym j resize grow height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
     bindsym Left resize shrink width 10 px or 10 ppt
     bindsym Down resize grow height 10 px or 10 ppt
     bindsym Up resize shrink height 10 px or 10 ppt
