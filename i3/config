@@ -7,8 +7,9 @@
 set $mod Mod4
 font pango:MapleMono Nerd Font 9
 
-
 exec_always --no-startup-id setxkbmap -layout se -variant us
+
+focus_on_window_activation smart
 
 # ─────────────────────────────
 # Autostart apps
@@ -31,7 +32,16 @@ gaps outer 10
 gaps inner 15
 for_window [class="^.*"] border pixel 3
 
+for_window [class="^.*"] floating enable
+
+for_window [class="firefox"] floating disable
+for_window [class="Spotify"] floating disable
+for_window [class="vesktop"] floating disable
+
 exec_always --no-startup-id feh /home/ferriit/Pictures/wallpapers/catppuccin2.jpg --bg-fill
+
+exec_always --no-startup-id xset s off -dpms
+
 
 # ─────────────────────────────
 # Colors (Catppuccin Mocha)
