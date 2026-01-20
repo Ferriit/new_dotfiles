@@ -1,7 +1,4 @@
-# ─────────────────────────────
-# 💜 Catppuccin Mocha i3-gaps Config
 # Swedish (US) layout: US keys, Right Alt → å ä ö
-# ─────────────────────────────
 
 # Mod key
 set $mod Mod4
@@ -11,9 +8,7 @@ exec_always --no-startup-id setxkbmap -layout se -variant us
 
 focus_on_window_activation smart
 
-# ─────────────────────────────
 # Autostart apps
-# ─────────────────────────────
 exec_always --no-startup-id dunst
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 exec --no-startup-id dex --autostart --environment i3
@@ -21,40 +16,31 @@ exec --no-startup-id nm-applet
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id export GTK_THEME=Catppuccin-Mocha-Standard-Mauve-Dark
 
-# Optional: remove if unnecessary
-exec_always --no-startup-id ~/.startup/unmute.sh
-# exec_always --no-startup-id python3 ~/Pictures/wallpapers/wallcycle.py
+exec_always --no-startup-id picom
 
-# ─────────────────────────────
 # Gaps & borders
-# ─────────────────────────────
 gaps outer 10
-gaps inner 15
-for_window [class="^.*"] border pixel 3
+gaps inner 10
+for_window [class="^.*"] default_border normal
 
-for_window [class="^.*"] floating enable
 
-for_window [class="firefox"] floating disable
-for_window [class="Spotify"] floating disable
-for_window [class="vesktop"] floating disable
+#for_window [class="firefox"] floating disable
+#for_window [class="Spotify"] floating disable
+#for_window [class="vesktop"] floating disable
 
-exec_always --no-startup-id feh /home/ferriit/Pictures/wallpapers/catppuccin2.jpg --bg-fill
+exec_always --no-startup-id feh /home/ferriit/Pictures/wallpapers/rainnight.jpg --bg-fill
 
 exec_always --no-startup-id xset s off -dpms
 
 
-# ─────────────────────────────
 # Colors (Catppuccin Mocha)
-# ─────────────────────────────
 client.focused          #cba6f7 #1e1e2e #cdd6f4 #b4befe #cba6f7
 client.focused_inactive #313244 #1e1e2e #a6adc8 #45475a #313244
 client.unfocused        #313244 #181825 #a6adc8 #313244 #181825
 client.urgent           #f38ba8 #1e1e2e #f5e0dc #f38ba8 #f38ba8
 client.placeholder      #1e1e2e #1e1e2e #cdd6f4 #1e1e2e #1e1e2e
 
-# ─────────────────────────────
 # Lockscreen
-# ─────────────────────────────
 bindsym $mod+Shift+x exec i3lock --blur 5 \
   --inside-color=1e1e2eFF \
   --ring-color=cba6f7FF \
@@ -67,16 +53,11 @@ bindsym $mod+Shift+x exec i3lock --blur 5 \
   --ringver-color=89b4faFF \
   --ringwrong-color=f38ba8FF
 
-# ─────────────────────────────
 # Dmenu / Rofi
-# ─────────────────────────────
-#bindsym $mod+w exec rofi -show drun -theme-str '* {background: #1e1e2e; foreground: #cdd6f4; selected-background: #cba6f7; selected-foreground: #1e1e2e;}'
 bindsym $mod+w exec rofi -show drun
 bindsym $mod+d exec --no-startup-id dmenu_run -nb '#1e1e2e' -nf '#cdd6f4' -sb '#cba6f7' -sf '#1e1e2e' -fn 'MapleMono Nerd Font-9'
 
-# ─────────────────────────────
 # Audio / Volume
-# ─────────────────────────────
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
@@ -88,23 +69,17 @@ bindsym $mod+Shift+b exec pactl set-source-volume 2 50%
 bindsym $mod+g exec pamixer --increase 5
 bindsym $mod+b exec pamixer --decrease 5
 
-# ─────────────────────────────
 # Floating / Dragging
-# ─────────────────────────────
 floating_modifier $mod
 tiling_drag modifier titlebar
 
-# ─────────────────────────────
 # Terminals
-# ─────────────────────────────
 bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+t exec --no-startup-id kitty
 bindsym $mod+Shift+t exec --no-startup-id alacritty
 bindsym $mod+e exec --no-startup-id nemo
 
-# ─────────────────────────────
 # Window management (US keys)
-# ─────────────────────────────
 bindsym $mod+q kill
 
 # Focus window
@@ -119,7 +94,6 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-# --- Arrow key support ---
 # Focus window with arrows
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
@@ -141,9 +115,7 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
-# ─────────────────────────────
 # Workspaces
-# ─────────────────────────────
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -177,9 +149,7 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
-# ─────────────────────────────
 # System
-# ─────────────────────────────
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3 session?' -B 'Yes, exit' 'i3-msg exit'"
@@ -192,9 +162,7 @@ exec --no-startup-id pamixer --default-source --set-volume 50
 # Screenshot
 bindsym Ctrl+Print exec flameshot gui
 
-# ─────────────────────────────
 # Resize mode
-# ─────────────────────────────
 mode "resize" {
     bindsym h resize shrink width 10 px or 10 ppt
     bindsym j resize grow height 10 px or 10 ppt
