@@ -28,7 +28,7 @@ for_window [class="^.*"] default_border normal
 #for_window [class="Spotify"] floating disable
 #for_window [class="vesktop"] floating disable
 
-exec_always --no-startup-id feh /home/ferriit/Pictures/wallpapers/rainnight.jpg --bg-fill
+exec_always --no-startup-id feh /home/ferriit/Pictures/wallpapers/cat-waves.png --bg-fill
 
 exec_always --no-startup-id xset s off -dpms
 
