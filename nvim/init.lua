@@ -81,7 +81,7 @@ vim.cmd [[
     hi! link FzfNormal Normal
     hi! link FzfBorder Comment
 
-    autocmd VimEnter * if isdirectory(argv(0)) | NnnPicker % | endif
+    autocmd VimEnter * if isdirectory(argv(0)) | execute 'cd' argv(0) | call timer_start(50, {-> execute('Files')}) | endif
 ]]
 
 vim.g.hexmode = false
