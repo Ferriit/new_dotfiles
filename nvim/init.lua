@@ -26,7 +26,6 @@ vim.keymap.set({'n', 'v'}, '<leader>p', '"+p<CR>')
 --     {src = 'https://github.com/neovim/nvim-lspconfig'},
 -- })
 
--- require("mini.map").toggle()
 vim.lsp.enable('pyright')
 vim.lsp.enable('clangd')
 
@@ -41,6 +40,9 @@ vim.lsp.config('asm-lsp', {
 })
 
 vim.cmd [[
+    let g:loaded_netrw = 1
+    let g:loaded_netrwPlugin = 1
+
     call plug#begin()
 
     " Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -50,8 +52,36 @@ vim.cmd [[
     Plug 'aidyak/tokusa'
     Plug 'nvim-lualine/lualine.nvim'
     Plug 'nvim-tree/nvim-web-devicons'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
+    Plug 'hrsh7th/nvim-cmp'
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/cmp-buffer'
+    Plug 'hrsh7th/cmp-path'
+    Plug 'L3MON4D3/LuaSnip'
+    Plug 'saadparwaiz1/cmp_luasnip'
 
     call plug#end()
+
+    let g:fzf_colors =
+    \ { 'fg':      ['fg', 'Normal'],
+    \   'bg':      ['bg', 'Normal'],
+    \   'hl':      ['fg', 'Comment'],
+    \   'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+    \   'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+    \   'hl+':     ['fg', 'Statement'],
+    \   'info':    ['fg', 'PreProc'],
+    \   'border':  ['fg', 'Ignore'],
+    \   'prompt':  ['fg', 'Conditional'],
+    \   'pointer': ['fg', 'Exception'],
+    \   'marker':  ['fg', 'Keyword'],
+    \   'spinner': ['fg', 'Label'],
+    \   'header':  ['fg', 'Comment'] }
+    
+    hi! link FzfNormal Normal
+    hi! link FzfBorder Comment
+
+    autocmd VimEnter * if isdirectory(argv(0)) | NnnPicker % | endif
 ]]
 
 vim.g.hexmode = false
@@ -66,7 +96,7 @@ vim.keymap.set("n", "<leader>x", function()
     vim.bo.filetype = ""
     vim.g.hexmode = false
   end
-end, { desc = "Toggle hex view" })
+end)
 
 
 -- vim.api.nvim_create_autocmd('LspAttach', {
@@ -105,8 +135,9 @@ vim.g['nnn#layout'] = {
     }
 }
 
-vim.keymap.set("n", "<leader>e", ":NnnPicker<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>E", ":NnnExplorer<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>f", ":NnnPicker<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>e", ":Files<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>g", ":GFiles<CR>", { noremap = true, silent = true })
 
 require("catppuccin").setup({
     flavour = "mocha",
@@ -124,6 +155,83 @@ vim.keymap.set('i', '[', '[]<Left>', { noremap = true, silent = true })
 vim.keymap.set('i', '{', '{}<Left>', { noremap = true, silent = true })
 vim.keymap.set('i', "'", "''<Left>", { noremap = true, silent = true })
 
-vim.keymap.set("i", "<Tab>", [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true, noremap = true })
-vim.keymap.set("i", "<S-Tab>", [[pumvisible() ? "\<C-p>" : "\<C-h>"]], { expr = true, noremap = true })
-vim.keymap.set("i", "<CR>", [[pumvisible() ? coc#_select_confirm() : "\<CR>"]], { expr = true, noremap = true, silent = true })
+local cmp = require'cmp'
+local luasnip = require'luasnip'
+
+cmp.setup({
+  snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then luasnip.expand_or_jump()
+      else fallback() end
+    end, { "i", "s" }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then luasnip.jump(-1)
+      else fallback() end
+    end, { "i", "s" }),
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  }, {
+    { name = 'buffer' },
+    { name = 'path' },
+  })
+})
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+local simple_servers = { 'pyright', 'clangd', 'asm_lsp' }
+for _, server in ipairs(simple_servers) do
+  vim.lsp.config(server, { capabilities = capabilities })
+  vim.lsp.enable(server)
+end
+
+vim.lsp.config('rust_analyzer', {
+  capabilities = capabilities,
+  settings = {
+    ['rust-analyzer'] = {
+      check = {
+        command = "clippy",
+      },
+      -- If you just want it on/off, use: checkOnSave = true
+    }
+  }
+})
+vim.lsp.enable('rust_analyzer')
+
+-- Show diagnostics in a floating window when cursor rests on them
+vim.diagnostic.config({
+  virtual_text = true,        -- inline error text
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  float = {
+    border = "rounded",
+    source = true,            -- shows which LSP reported the error
+  },
+})
+
+-- Open diagnostic float on cursor hold
+vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { noremap = true, silent = true })
+
+-- Or auto-show on CursorHold (cursor idle)
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+    vim.diagnostic.open_float(nil, { focus = false })
+  end,
+})
+
+-- Hover docs / type info (press twice to enter the float and scroll)
+vim.keymap.set('n', 'K', vim.lsp.buf.hover, { noremap = true, silent = true })
+
+-- Code actions (suggestions/fixes)
+vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, { noremap = true, silent = true })
+
+-- Optional but useful: go to definition, references
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { noremap = true, silent = true })
+vim.keymap.set('n', 'gr', vim.lsp.buf.references, { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, { noremap = true, silent = true })
