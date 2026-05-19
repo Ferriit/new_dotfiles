@@ -184,7 +184,7 @@ cmp.setup({
 })
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-local simple_servers = { 'pyright', 'clangd', 'asm_lsp' }
+local simple_servers = { 'pyright', 'clangd', 'zls', 'asm_lsp' }
 for _, server in ipairs(simple_servers) do
   vim.lsp.config(server, { capabilities = capabilities })
   vim.lsp.enable(server)
