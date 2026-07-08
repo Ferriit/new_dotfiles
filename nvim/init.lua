@@ -1,4 +1,5 @@
 vim.o.number = true
+vim.o.relativenumber = true
 vim.o.wrap = true
 vim.o.termguicolors = true
 
@@ -10,34 +11,23 @@ vim.o.expandtab = true
 vim.o.softtabstop = 4
 
 vim.o.swapfile = false
+vim.o.autochdir = false
 vim.g.mapleader = " "
 
-vim.keymap.set('n', '<leader>o', ':update<CR> :source<CR>')
-vim.keymap.set('n', '<leader>w', ':write<CR>')
-vim.keymap.set('n', '<leader>q', ':quit<CR>')
-vim.keymap.set('n', '<leader>u', ':undo<CR>')
+vim.keymap.set("n", "<leader>o", ":update<CR> :source<CR>")
+vim.keymap.set("n", "<leader>w", ":write<CR>")
+vim.keymap.set("n", "<leader>q", ":quit<CR>")
+vim.keymap.set("n", "<leader>u", ":undo<CR>")
 
-vim.keymap.set({'n', 'v'}, '<leader>y', '"+y<CR>')
-vim.keymap.set({'n', 'v'}, '<leader>p', '"+p<CR>')
+vim.keymap.set({"n", "v"}, "<leader>y", "\"+y<CR>")
+vim.keymap.set({"n", "v"}, "<leader>p", "\"+p<CR>")
 
 -- vim.pack.add({
 --     {src = "https://github.com/catppuccin/nvim"},
 --     -- {src = "https://github.com/echasnovski/mini.map"},
---     {src = 'https://github.com/neovim/nvim-lspconfig'},
+--     {src = "https://github.com/neovim/nvim-lspconfig"},
 -- })
 
-vim.lsp.enable('pyright')
-vim.lsp.enable('clangd')
-
-vim.lsp.config('rust_analyzer', {
-  settings = {
-    ['rust-analyzer'] = {},
-  },
-})
-
-vim.lsp.config('asm-lsp', {
-  filetypes = { 'asm', 's', 'S' },
-})
 
 vim.cmd [[
     let g:loaded_netrw = 1
@@ -60,6 +50,12 @@ vim.cmd [[
     Plug 'hrsh7th/cmp-path'
     Plug 'L3MON4D3/LuaSnip'
     Plug 'saadparwaiz1/cmp_luasnip'
+    Plug 'stevearc/aerial.nvim'
+    Plug 'nvim-neo-tree/neo-tree.nvim'
+    Plug 'MunifTanjim/nui.nvim'
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-tree/nvim-web-devicons'
+    Plug 'OmniSharp/omnisharp-vim'
 
     call plug#end()
 
@@ -81,8 +77,13 @@ vim.cmd [[
     hi! link FzfNormal Normal
     hi! link FzfBorder Comment
 
-    autocmd VimEnter * if isdirectory(argv(0)) | execute 'cd' argv(0) | call timer_start(50, {-> execute('Files')}) | endif
+
+    nnoremap <C-h> <C-w>h
+    nnoremap <C-l> <C-w>l
+    nnoremap <C-j> <C-w>j
+    nnoremap <C-k> <C-w>k
 ]]
+
 
 vim.g.hexmode = false
 
@@ -99,10 +100,10 @@ vim.keymap.set("n", "<leader>x", function()
 end)
 
 
--- vim.api.nvim_create_autocmd('LspAttach', {
+-- vim.api.nvim_create_autocmd("LspAttach", {
 --     callback = function(ev)
 --         local client = vim.lsp.get_client_by_id(ev.data.client_id)
---         if client:supports_method('textDocument/completion') then
+--         if client:supports_method("textDocument/completion") then
 --             vim.lsp.enable(true, client.id, ev.buf, { autotrigger = true })
 --         end
 --     end,
@@ -112,22 +113,22 @@ end)
 -- vim.cmd("set completeopt+=noselect")
 
 
-require('lualine').setup({
+require("lualine").setup({
   options = {
-    theme = 'auto',
+    theme = "auto",
     icons_enabled = true,
   },
   sections = {
-    lualine_a = { 'mode' },
-    lualine_b = { 'branch', 'diff' },
-    lualine_c = { 'filename' },
-    lualine_x = { 'diagnostics' },
-    lualine_y = { 'encoding', 'fileformat', 'filetype' },
-    lualine_z = { 'location' },
+    lualine_a = { "mode" },
+    lualine_b = { "branch", "diff" },
+    lualine_c = { "filename" },
+    lualine_x = { "diagnostics" },
+    lualine_y = { "encoding", "fileformat", "filetype" },
+    lualine_z = { "location" },
   },
 })
 
-vim.g['nnn#layout'] = {
+vim.g["nnn#layout"] = {
     window = {
         width = 0.8,
         height = 0.8,
@@ -149,61 +150,91 @@ require("catppuccin").setup({
 
 vim.cmd("colorscheme catppuccin")
 
-vim.keymap.set('i', '(', '()<Left>', { noremap = true, silent = true })
-vim.keymap.set('i', '"', '""<Left>', { noremap = true, silent = true })
-vim.keymap.set('i', '[', '[]<Left>', { noremap = true, silent = true })
-vim.keymap.set('i', '{', '{}<Left>', { noremap = true, silent = true })
-vim.keymap.set('i', "'", "''<Left>", { noremap = true, silent = true })
+vim.keymap.set("i", "(", "()<Left>", { noremap = true, silent = true })
+vim.keymap.set("i", "\"", "\"\"<Left>", { noremap = true, silent = true })
+vim.keymap.set("i", "[", "[]<Left>", { noremap = true, silent = true })
+vim.keymap.set("i", "{", "{}<Left>", { noremap = true, silent = true })
+vim.keymap.set("i", "\"", "\"\"<Left>", { noremap = true, silent = true })
 
-local cmp = require'cmp'
-local luasnip = require'luasnip'
+local cmp = require"cmp"
+local luasnip = require"luasnip"
 
 cmp.setup({
   snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
   mapping = cmp.mapping.preset.insert({
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm({ select = false }),
-    ['<Tab>'] = cmp.mapping(function(fallback)
+    ["<C-Space>"] = cmp.mapping.complete(),
+    ["<CR>"] = cmp.mapping.confirm({ select = false }),
+    ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then cmp.select_next_item()
       elseif luasnip.expand_or_jumpable() then luasnip.expand_or_jump()
       else fallback() end
     end, { "i", "s" }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then cmp.select_prev_item()
       elseif luasnip.jumpable(-1) then luasnip.jump(-1)
       else fallback() end
     end, { "i", "s" }),
   }),
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
+    { name = "nvim_lsp" },
+    { name = "luasnip" },
   }, {
-    { name = 'buffer' },
-    { name = 'path' },
+    { name = "buffer" },
+    { name = "path" },
   })
 })
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-local simple_servers = { 'pyright', 'clangd', 'zls', 'asm_lsp' }
+local simple_servers = {
+  "pyright",
+  "clangd",
+  "zls",
+  "asm_lsp",
+}
+
 for _, server in ipairs(simple_servers) do
-  vim.lsp.config(server, { capabilities = capabilities })
-  vim.lsp.enable(server)
+    vim.lsp.config(server, { capabilities = capabilities })
+    vim.lsp.enable(server)
 end
 
-vim.lsp.config('rust_analyzer', {
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "cs",
+  callback = function(args)
+    vim.lsp.start({
+      name = "omnisharp",
+      cmd = {
+        "omnisharp",
+        "--languageserver",
+        "--hostPID",
+        tostring(vim.fn.getpid()),
+      },
+      root_dir = vim.fs.root(args.buf, {
+        "Assets",
+        "Packages",
+        "*.sln",
+        "*.csproj",
+      }),
+      capabilities = require("cmp_nvim_lsp").default_capabilities(),
+
+      on_attach = function(client)
+        client.server_capabilities.semanticTokensProvider = nil
+      end,
+    })
+  end,
+})
+
+vim.lsp.config("rust_analyzer", {
   capabilities = capabilities,
   settings = {
-    ['rust-analyzer'] = {
+    ["rust-analyzer"] = {
       check = {
         command = "clippy",
       },
-      -- If you just want it on/off, use: checkOnSave = true
     }
   }
 })
-vim.lsp.enable('rust_analyzer')
+vim.lsp.enable("rust_analyzer")
 
--- Show diagnostics in a floating window when cursor rests on them
 vim.diagnostic.config({
   virtual_text = true,        -- inline error text
   signs = true,
@@ -215,23 +246,61 @@ vim.diagnostic.config({
   },
 })
 
--- Open diagnostic float on cursor hold
-vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { noremap = true, silent = true })
 
--- Or auto-show on CursorHold (cursor idle)
 vim.api.nvim_create_autocmd("CursorHold", {
   callback = function()
     vim.diagnostic.open_float(nil, { focus = false })
   end,
 })
 
--- Hover docs / type info (press twice to enter the float and scroll)
-vim.keymap.set('n', 'K', vim.lsp.buf.hover, { noremap = true, silent = true })
+vim.keymap.set("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true })
 
--- Code actions (suggestions/fixes)
-vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, { noremap = true, silent = true })
 
--- Optional but useful: go to definition, references
-vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { noremap = true, silent = true })
-vim.keymap.set('n', 'gr', vim.lsp.buf.references, { noremap = true, silent = true })
-vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, { noremap = true, silent = true })
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, { noremap = true, silent = true })
+vim.keymap.set("n", "gr", vim.lsp.buf.references, { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle<CR>")
+
+require("aerial").setup({
+  backends = { "lsp", "treesitter", "markdown" },
+
+  layout = {
+    default_direction = "right",
+    width = 20,
+  },
+
+  attach_mode = "global",
+
+  close_on_select = true,
+  autojump = true,
+})
+
+require("neo-tree").setup({
+  close_if_last_window = true,
+  filesystem = {
+    follow_current_file = {
+      enabled = true,
+    },
+  },
+  window = {
+    position = "left",
+    width = 30,
+  },
+})
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    vim.defer_fn(function()
+      vim.cmd("Neotree show")
+      vim.cmd("wincmd p")
+
+      if vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
+        vim.cmd("cd " .. vim.fn.argv(0))
+        vim.cmd("Files")
+      end
+    end, 50)
+  end,
+})
+
