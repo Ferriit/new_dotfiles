@@ -4,6 +4,11 @@
 set $mod Mod4
 font pango:MapleMono Nerd Font 9
 
+# exec_always --no-startup-id xrandr --output HDMI-0 --primary --auto --pos 0x0 --output DP-2.8 --auto --rotate left --pos 1920x0
+exec_always --no-startup-id xrandr \
+  --output DP-2.8 --primary --auto --pos 0x0 \
+  --output HDMI-0 --auto --right-of DP-2.8
+
 exec_always --no-startup-id setxkbmap -layout se -variant us
 
 focus_on_window_activation smart
@@ -18,17 +23,20 @@ exec --no-startup-id export GTK_THEME=Catppuccin-Mocha-Standard-Mauve-Dark
 
 exec_always --no-startup-id picom
 
+# Dualsense touchpad fix
+exec --no-startup-id xinput disable "Sony Interactive Entertainment DualSense Wireless Controller Touchpad"
+
+
 # Gaps & borders
 gaps outer 10
 gaps inner 10
-for_window [class="^.*"] default_border normal
-
+for_window [class="^.*"] border pixel 2
 
 #for_window [class="firefox"] floating disable
 #for_window [class="Spotify"] floating disable
 #for_window [class="vesktop"] floating disable
 
-exec_always --no-startup-id feh /home/ferriit/Pictures/wallpapers/cat-waves.png --bg-fill
+exec_always --no-startup-id feh /home/ferriit/Pictures/wallpapers/Clearnight.jpg --bg-fill
 
 exec_always --no-startup-id xset s off -dpms
 
@@ -64,8 +72,8 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
-bindsym $mod+Shift+g exec pactl set-source-volume 2 200%
-bindsym $mod+Shift+b exec pactl set-source-volume 2 50%
+bindsym $mod+Shift+g exec pactl set-source-volume 58 400%
+bindsym $mod+Shift+b exec pactl set-source-volume 58 50%
 bindsym $mod+g exec pamixer --increase 5
 bindsym $mod+b exec pamixer --decrease 5
 
@@ -74,13 +82,16 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # Terminals
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec --no-startup-id /home/ferriit/bash_term.sh
+bindsym $mod+Shift+Return exec --no-startup-id /home/ferriit/htop_term.sh
 bindsym $mod+t exec --no-startup-id kitty
 bindsym $mod+Shift+t exec --no-startup-id alacritty
 bindsym $mod+e exec --no-startup-id nemo
 
 # Window management (US keys)
 bindsym $mod+q kill
+
+exec_always sudo modprobe v4l2loopback devices=1 video_nr=2 card_label="OBS Virtual Camera" exclusive_caps=1
 
 # Focus window
 bindsym $mod+h focus left
@@ -126,6 +137,16 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
+set $ws11 "11"
+set $ws12 "12"
+set $ws13 "13"
+set $ws14 "14"
+set $ws15 "15"
+set $ws16 "16"
+set $ws17 "17"
+set $ws18 "18"
+set $ws19 "19"
+set $ws20 "20"
 
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2
@@ -137,6 +158,38 @@ bindsym $mod+7 workspace number $ws7
 bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
+bindsym $mod+F1 workspace number $ws11
+bindsym $mod+F2 workspace number $ws12
+bindsym $mod+F3 workspace number $ws13
+bindsym $mod+F4 workspace number $ws14
+bindsym $mod+F5 workspace number $ws15
+bindsym $mod+F6 workspace number $ws16
+bindsym $mod+F7 workspace number $ws17
+bindsym $mod+F8 workspace number $ws18
+bindsym $mod+F9 workspace number $ws19
+bindsym $mod+F10 workspace number $ws20
+
+# workspace $ws1 output HDMI-0
+# workspace $ws2 output HDMI-0
+# workspace $ws3 output HDMI-0
+# workspace $ws4 output HDMI-0
+# workspace $ws5 output HDMI-0
+# workspace $ws6 output HDMI-0
+# workspace $ws7 output HDMI-0
+# workspace $ws8 output HDMI-0
+# workspace $ws9 output HDMI-0
+# workspace $ws10 output HDMI-0
+# 
+# workspace $ws11 output DP-2.8
+# workspace $ws12 output DP-2.8
+# workspace $ws13 output DP-2.8
+# workspace $ws14 output DP-2.8
+# workspace $ws15 output DP-2.8
+# workspace $ws16 output DP-2.8
+# workspace $ws17 output DP-2.8
+# workspace $ws18 output DP-2.8
+# workspace $ws19 output DP-2.8
+# workspace $ws20 output DP-2.8
 
 bindsym $mod+Shift+1 move container to workspace number $ws1
 bindsym $mod+Shift+2 move container to workspace number $ws2
@@ -148,6 +201,16 @@ bindsym $mod+Shift+7 move container to workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
+bindsym $mod+Shift+F1 move container to workspace number $ws11
+bindsym $mod+Shift+F2 move container to workspace number $ws12
+bindsym $mod+Shift+F3 move container to workspace number $ws13
+bindsym $mod+Shift+F4 move container to workspace number $ws14
+bindsym $mod+Shift+F5 move container to workspace number $ws15
+bindsym $mod+Shift+F6 move container to workspace number $ws16
+bindsym $mod+Shift+F7 move container to workspace number $ws17
+bindsym $mod+Shift+F8 move container to workspace number $ws18
+bindsym $mod+Shift+F9 move container to workspace number $ws19
+bindsym $mod+Shift+F0 move container to workspace number $ws20
 
 # System
 bindsym $mod+Shift+c reload
@@ -160,7 +223,7 @@ exec --no-startup-id pamixer --set-volume 100
 exec --no-startup-id pamixer --default-source --set-volume 50
 
 # Screenshot
-bindsym Ctrl+Print exec flameshot gui
+bindsym Control+Print exec gnome-screenshot -i
 
 # Resize mode
 mode "resize" {
